@@ -1,0 +1,11 @@
+<main style="padding: 2rem; font-family: system-ui, Arial, sans-serif">
+  <h1>Angular ↔ ASP.NET Core</h1>
+
+  <button (click)="sayHello()">Call API</button>
+
+  @if (greeting()){
+    <p>{{greeting()}}</p>
+  } @else if (error()) {
+    <p>{{error()}}</p>
+  }
+</main>
