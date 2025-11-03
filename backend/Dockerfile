@@ -12,6 +12,10 @@ RUN dotnet publish ./backend/backend.csproj -c Release -o /out
 
 # ---- Runtime stage ----
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS runtime
+
+RUN apk add --no-cache icu-libs
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+
 WORKDIR /app
 COPY --from=build /out ./
 ENV ASPNETCORE_URLS=http://+:8080
