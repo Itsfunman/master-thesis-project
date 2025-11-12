@@ -1,27 +1,39 @@
-using backend.FormGeneration;
-using backend.FormGeneration.Data.Repositories.GeneralRepositories;
-using backend.FormGeneration.DataInterface;
-using backend.FormGeneration.Data.Repositories;
+using backend.Models;
+using backend.Repos;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+DotNetEnv.Env.Load();
 
-// MVC / Swagger
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// If your repo uses a DbContext, register it too
-builder.Services.AddDbContext<AppDBContext>(opts =>
-    opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Configuration.AddEnvironmentVariables();
+string? formConnectionString = builder.Configuration.GetConnectionString("Form__Connection");
 
-// 🔑 Register repositories (Scoped is the usual choice)
-builder.Services.AddScoped<IBusinessRepository, BusinessRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>(); // if you use it elsewhere
+builder.Services.AddDbContext<ApplicationDbContext>(opts =>
+    opts.UseNpgsql(formConnectionString));
+
+
+builder.Services.AddScoped<IBusinessCategoryRepository, BusinessCategoryRepository>();
+//builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+//builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+//builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
 
 var app = builder.Build();
+
+
+
 app.UseDeveloperExceptionPage();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();
+
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+app.MapGet("/", () => Results.Redirect("/swagger"));
+
 app.Run();
