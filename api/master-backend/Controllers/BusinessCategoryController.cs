@@ -6,10 +6,10 @@ namespace master_backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BusinessesController : ControllerBase
+public class BusinessesCategoryController : ControllerBase
 {
     private readonly IBusinessCategoryRepository _repo;
-    public BusinessesController(IBusinessCategoryRepository repo) => _repo = repo;
+    public BusinessesCategoryController(IBusinessCategoryRepository repo) => _repo = repo;
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BusinessCategory>>> GetAll()

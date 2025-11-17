@@ -14,6 +14,9 @@ var cs = Environment.GetEnvironmentVariable("ConnectionStrings__Form__Connection
 
 builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseNpgsql(cs));
 builder.Services.AddScoped<IBusinessCategoryRepository, BusinessCategoryRepository>();
+builder.Services.AddScoped<IDepartmentCategoryRepository, DepartmentCategoryRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
@@ -26,11 +29,10 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
-// OPTIONAL: apply EF migrations automatically on container start
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate(); // remove if you prefer manual "dotnet ef" execution
+    db.Database.Migrate();
 }
 
 app.Run();
