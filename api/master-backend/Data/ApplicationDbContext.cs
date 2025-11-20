@@ -1,6 +1,7 @@
 
 using master_backend.Models.ModelImplementations;
 using master_backend.Models.ModelImplementations.BlockModels;
+using master_backend.Models.ModelImplementations.FuzzyModels;
 using master_backend.Models.ModelImplementations.GeneralModels;
 using master_backend.Models.ModelImplementations.ProbabilityModels;
 using Microsoft.EntityFrameworkCore;
@@ -30,4 +31,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<UserAction> UserActions { get; set; } = null!;
     public DbSet<UserProbability> UserProbabilities { get; set; } = null!;
     
+    // Fuzzy Stuff:
+    public DbSet<CompanyWeight> CompanyWeights { get; set; } = null!;
+    public DbSet<FuzzyBlock> FuzzyBlocks { get; set; } = null!;
+    public DbSet<UserWeight> UserWeights { get; set; } = null!;
 }

@@ -1,9 +1,9 @@
-using master_backend.Models.IRepository;
 using master_backend.Models.IRepository.BlockIRepositories;
+using master_backend.Models.IRepository.FuzzyIRepositories;
 using master_backend.Models.IRepository.GeneralIRepositories;
 using master_backend.Models.IRepository.ProbabilityIRepositories;
-using master_backend.Models.Repository;
 using master_backend.Models.Repository.BlockRepositories;
+using master_backend.Models.Repository.FuzzyRepositories;
 using master_backend.Models.Repository.GeneralRepositories;
 using master_backend.Models.Repository.ProbabilityRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -42,11 +42,17 @@ builder.Services.AddScoped<IDepartmentCategoryProbabilityRepository, DepartmentC
 builder.Services.AddScoped<IUserActionRepository, UserActionRepository>();
 builder.Services.AddScoped<IUserProbabilityRepository, UserProbabilityRepository>();
 
+// Fuzzy Stuff
+builder.Services.AddScoped<ICompanyWeightRepository, CompanyWeightRepository>();
+builder.Services.AddScoped<IFuzzyBlockRepository, FuzzyBlockRepository>();
+builder.Services.AddScoped<IUserWeightRepository, UserWeightRepository>();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("General", new OpenApiInfo { Title = "General API", Version = "v1" });
     c.SwaggerDoc("Block", new OpenApiInfo { Title = "Block API", Version = "v1" });
     c.SwaggerDoc("Probability", new OpenApiInfo { Title = "Probability API", Version = "v1" });
+    c.SwaggerDoc("Fuzzy", new OpenApiInfo { Title = "Fuzzy API", Version = "v1" });
 
     c.DocInclusionPredicate((docName, apiDesc) =>
     {
@@ -65,6 +71,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/General/swagger.json", "General API v1");
         c.SwaggerEndpoint("/swagger/Block/swagger.json", "Block API v1");
         c.SwaggerEndpoint("/swagger/Probability/swagger.json", "Probability API v1");
+        c.SwaggerEndpoint("/swagger/Fuzzy/swagger.json", "Fuzzy API v1");
         c.RoutePrefix = string.Empty;
     });
 
